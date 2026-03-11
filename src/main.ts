@@ -1,39 +1,11 @@
 // Fichier main.ts
 import './style.css'
-interface Plat{
-  id:number;
-  nom:string;
-  prix:number;
-  description:string;
-}
-const carte:Plat[]=[
-  {id:1 ,nom:'Anchois 23cm',prix:7.9,description:"sauce tomate premium,origan,huile d'olive extra vierge,anchois,olive"},
-  {id:2 ,nom:'Emmental 23cm',prix:7.9,description:"sauce tomate premium,origan,huile d'olive extra vierge,emmental,basilic,olive"},
-  {id:3 ,nom:'Margherita 23cm',prix:7.9,description:"sauce tomate premium,origan,huile d'olive extra vierge,mozzarella"}
-]
-console.log(carte);
-const appDiv=document.querySelector<HTMLDivElement>('#app');
-if(appDiv){
-  appDiv.innerHTML=`
-  <header>
-      <h1>EatSmart - Carte du Restaurant</h1>
-    </header>
-    <main class="menu-container">
-    ${carte.map(p=>`
-      <div class=card>
-      <h3>${p.nom}</h3>
-      <p>${p.description}<p>
-      <p><strong>Prix: ${p.prix}€</strong></p>
-      </div>
-      
-  `).join('')}
-  </main>
-  `;
-}
 interface Article{
   idArticle:number;
   nomArticle:string;
   PrixArticle:number;
+  ingredientsArticle:string;
+  quantiteArticle:number;
 
 }
 async function recuperationArticle():Promise<Article[]>{
@@ -41,4 +13,32 @@ async function recuperationArticle():Promise<Article[]>{
   return await article.json();
 
 }
-console.log(recuperationArticle())
+console.log(recuperationArticle());
+async function init() { 
+console.log("Chargement du menu..."); 
+// 1. On attend la fin de la récupération 
+const menuData = await recuperationArticle(); 
+// 2. On cible la zone d'affichage (#app) 
+const appDiv = document.querySelector<HTMLDivElement>('#app'); 
+// 3. On injecte le HTML seulement si l'élément existe 
+if (appDiv) { 
+        appDiv.innerHTML=`
+  <header>
+      <h1>EatSmart - Carte du Restaurant</h1>
+    </header>
+    <main class="menu-container">
+    ${menuData.map(p=> `
+      <div class=card>
+      <h3>${p.nomArticle}</h3>
+      <p>${p.ingredientsArticle}<p>
+      <p><strong>Prix: ${p.PrixArticle}€</strong></p>
+      </div>
+      
+  `).join('')}
+  </main>
+  `;
+    } 
+
+} 
+// On n'oublie pas d'appeler la fonction pour démarrer l'application ! 
+init(); 
