@@ -30,3 +30,15 @@ if(appDiv){
   </main>
   `;
 }
+interface Article{
+  idArticle:number;
+  nomArticle:string;
+  PrixArticle:number;
+
+}
+async function recuperationArticle():Promise<Article[]>{
+  const article= await fetch('http://localhost/eatsmart-doriann/doriann-api-eatsmart/articles');
+  return await article.json();
+
+}
+console.log(recuperationArticle())
