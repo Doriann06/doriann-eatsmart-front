@@ -25,19 +25,31 @@ const appDiv = document.querySelector<HTMLDivElement>('#app');
 if (appDiv) { 
         appDiv.innerHTML=`
   <header>
-      <h1>EatSmart - Carte du Restaurant</h1>
-    </header>
+    <h1>EatSmart - Carte du Restaurant</h1>
+  </header>
+  <div class='content-wrapper'>
     <main class="menu-container">
-    ${menuData.map(p=> `
-      <div class=card>
-      <h3>${p.nomArticle}</h3>
-      <p>${p.ingredientsArticle}<p>
-      <p><strong>Prix: ${p.PrixArticle}€</strong></p>
-      <button class=btn-order>Ajouter</button>
+      ${menuData.map(p=> `
+        <div class=card>
+        <h3>${p.nomArticle}</h3>
+        <p>${p.ingredientsArticle}<p>
+        <p><strong>Prix: ${p.PrixArticle}€</strong></p>
+        <button class=btn-order>Ajouter</button>
+        </div>
+        
+    `).join('')}
+    </main>
+    <asside class='cart-container'>
+      <h2> Votre Panier</h2>
+      <div id="cart-total">
+        <p> Votre panier est vide</p>
       </div>
-      
-  `).join('')}
-  </main>
+      <hr>
+      <div class="cart-total">
+        <strong> Total:<span id="total-prix">0.00</sapn>€</strong>
+      </div>
+    </asside>
+  </div>  
   `;
     } 
 // Récupère TOUS les boutons ayant la classe "btn-order"
