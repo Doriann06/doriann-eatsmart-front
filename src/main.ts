@@ -39,7 +39,14 @@ if (appDiv) {
   </main>
   `;
     } 
-
+// Récupère TOUS les boutons ayant la classe "btn-order"
+const tousLesBoutons = document.querySelectorAll<HTMLButtonElement>('.btn-order');
+tousLesBoutons.forEach((btn, index) => { 
+    btn.addEventListener('click', () => { 
+console.log(`Bouton n°${index} cliqué ! Plat= ${menuData[index].nomArticle}`); 
+    }); 
+});
 } 
 // On n'oublie pas d'appeler la fonction pour démarrer l'application ! 
-init(); 
+init();
+ 
