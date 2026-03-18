@@ -6,27 +6,44 @@ interface Article{
   PrixArticle:number;
   ingredientsArticle:string;
   quantiteArticle:number;
-
+}
+interface Message{
+  userId: number,
+  id: number,
+  title: string,
+  completed: boolean
+}
+function bonPlan(prix:number){
+  if (prix<10){return"  🔥Bon Plan"; }
+  else{return ""}
 }
 async function recuperationArticle():Promise<Article[]>{
   const article= await fetch('http://localhost/eatsmart-doriann/doriann-api-eatsmart/articles');
   return await article.json();
 
 }
+async function recuperationMessage():Promise<Message[]>{
+  const message= await fetch('https://jsonplaceholder.typicode.com/todos/1');
+  return await message.json();
+
+}
+ 
 console.log(recuperationArticle());
 async function init() { 
 console.log("Chargement du menu...");
 let panier: Article[]=[]
 // 1. On attend la fin de la récupération 
 const menuData = await recuperationArticle(); 
+const messageData = await recuperationMessage(); 
 // 2. On cible la zone d'affichage (#app) 
 const appDiv = document.querySelector<HTMLDivElement>('#app'); 
 // 3. On injecte le HTML seulement si l'élément existe 
 if (appDiv) { 
         appDiv.innerHTML=`
   <header>
-    <h1>EatSmart - Carte du Restaurant</h1>
+    <h1>EatSmart - Carte du Restaurant (${menuData.length}plats)</h1>
   </header>
+  Message du jour: ${messageData.title}
   <div class='content-wrapper'>
     <main class="menu-container">
       ${menuData.map(p=> `
@@ -34,6 +51,7 @@ if (appDiv) {
         <h3>${p.nomArticle}</h3>
         <p>${p.ingredientsArticle}<p>
         <p><strong>Prix: ${p.PrixArticle}€</strong></p>
+        <p><strong>${bonPlan(p.PrixArticle)}</strong></p>
         <button class=btn-order>Ajouter</button>
         </div>
         
