@@ -32,6 +32,7 @@ if (appDiv) {
       <h3>${p.nomArticle}</h3>
       <p>${p.ingredientsArticle}<p>
       <p><strong>Prix: ${p.PrixArticle}€</strong></p>
+      <button class=btn-order>Ajouter</button>
       </div>
       
   `).join('')}
