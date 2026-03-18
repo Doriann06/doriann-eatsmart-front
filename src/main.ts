@@ -15,7 +15,8 @@ async function recuperationArticle():Promise<Article[]>{
 }
 console.log(recuperationArticle());
 async function init() { 
-console.log("Chargement du menu..."); 
+console.log("Chargement du menu...");
+let panier: Article[]=[]
 // 1. On attend la fin de la récupération 
 const menuData = await recuperationArticle(); 
 // 2. On cible la zone d'affichage (#app) 
@@ -43,7 +44,11 @@ if (appDiv) {
 const tousLesBoutons = document.querySelectorAll<HTMLButtonElement>('.btn-order');
 tousLesBoutons.forEach((btn, index) => { 
     btn.addEventListener('click', () => { 
-console.log(`Bouton n°${index} cliqué ! Plat= ${menuData[index].nomArticle}`); 
+      console.log(`Bouton n°${index} cliqué ! Plat= ${menuData[index].nomArticle}`);
+      panier.push(menuData[index]);
+      console.log(`Panier=`)
+      console.log(panier);
+
     }); 
 });
 } 
