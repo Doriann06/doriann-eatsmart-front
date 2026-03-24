@@ -17,21 +17,28 @@ function bonPlan(prix:number){
   if (prix<10){return"  🔥Bon Plan"; }
   else{return ""}
 }
+function affichePannier(panier:Article[]){
+  let strPannier:string=""
+  panier.forEach((value:Article)=>{
+    strPannier=strPannier+`<p> ${value.nomArticle}          ${value.PrixArticle}€`
+  })
+  if (strPannier==""){return "Votre panier est vide"}
+  else{return strPannier}
+}
 async function recuperationArticle():Promise<Article[]>{
   const article= await fetch('http://localhost/eatsmart-doriann/doriann-api-eatsmart/articles');
   return await article.json();
 
 }
-async function recuperationMessage():Promise<Message[]>{
+async function recuperationMessage():Promise<Message>{
   const message= await fetch('https://jsonplaceholder.typicode.com/todos/1');
   return await message.json();
 
 }
- 
+let panier: Article[]=[]
 console.log(recuperationArticle());
 async function init() { 
 console.log("Chargement du menu...");
-let panier: Article[]=[]
 // 1. On attend la fin de la récupération 
 const menuData = await recuperationArticle(); 
 const messageData = await recuperationMessage(); 
@@ -60,7 +67,7 @@ if (appDiv) {
     <asside class='cart-container'>
       <h2> Votre Panier</h2>
       <div id="cart-total">
-        <p> Votre panier est vide</p>
+        <p> ${affichePannier(panier)}</p>
       </div>
       <hr>
       <div class="cart-total">
@@ -78,6 +85,7 @@ tousLesBoutons.forEach((btn, index) => {
       panier.push(menuData[index]);
       console.log(`Panier=`)
       console.log(panier);
+      init();
 
     }); 
 });
