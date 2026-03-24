@@ -25,6 +25,13 @@ function affichePannier(panier:Article[]){
   if (strPannier==""){return "Votre panier est vide"}
   else{return strPannier}
 }
+function afficheTotal(panier:Article[]){
+  let totalPannier:number=0;
+  panier.forEach((value:Article)=>{
+    totalPannier+=+value.PrixArticle;
+  })
+  return totalPannier.toFixed(2);
+}
 async function recuperationArticle():Promise<Article[]>{
   const article= await fetch('http://localhost/eatsmart-doriann/doriann-api-eatsmart/articles');
   return await article.json();
@@ -35,6 +42,7 @@ async function recuperationMessage():Promise<Message>{
   return await message.json();
 
 }
+// initialise le pannier
 let panier: Article[]=[]
 console.log(recuperationArticle());
 async function init() { 
@@ -48,7 +56,7 @@ const appDiv = document.querySelector<HTMLDivElement>('#app');
 if (appDiv) { 
         appDiv.innerHTML=`
   <header>
-    <h1>EatSmart - Carte du Restaurant (${menuData.length}plats)</h1>
+    <h1>EatSmart - Carte du Restaurant (${menuData.length} plats)</h1>
   </header>
   Message du jour: ${messageData.title}
   <div class='content-wrapper'>
@@ -71,7 +79,7 @@ if (appDiv) {
       </div>
       <hr>
       <div class="cart-total">
-        <strong> Total:<span id="total-prix">0.00</sapn>€</strong>
+        <strong> Total:<span id="total-prix">${afficheTotal(panier)}</sapn>€</strong>
       </div>
     </asside>
   </div>  
@@ -82,10 +90,10 @@ const tousLesBoutons = document.querySelectorAll<HTMLButtonElement>('.btn-order'
 tousLesBoutons.forEach((btn, index) => { 
     btn.addEventListener('click', () => { 
       console.log(`Bouton n°${index} cliqué ! Plat= ${menuData[index].nomArticle}`);
-      panier.push(menuData[index]);
+      panier.push(menuData[index]);// ajoute l'article au pannier
       console.log(`Panier=`)
       console.log(panier);
-      init();
+      init(); // reafiche le pannier pour faire apparaitre les rajout d'article
 
     }); 
 });
