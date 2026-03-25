@@ -13,6 +13,12 @@ interface Message{
   title: string,
   completed: boolean
 }
+interface Commande{
+  idCommande:number|null;
+  prixTotal:number;
+  dateCommande:string;
+  estPret:string;
+}
 function bonPlan(prix:number){
   if (prix<10){return"  🔥Bon Plan"; }
   else{return ""}
@@ -25,12 +31,18 @@ function affichePannier(panier:Article[]){
   if (strPannier==""){return "Votre panier est vide"}
   else{return strPannier}
 }
-function afficheTotal(panier:Article[]){
+function afficheTotal(panier:Article[]):number{
   let totalPannier:number=0;
   panier.forEach((value:Article)=>{
     totalPannier+=+value.PrixArticle;
   })
   return totalPannier.toFixed(2);
+}
+function creeCommande(prix:number){
+  const maintenant = new Date();
+  const dateMySQL = maintenant.toISOString().slice(0, 19).replace('T', ' ');
+  const commande:Commande={idCommande:null,prixTotal:prix,dateCommande:dateMySQL,estPret:'en cours'};
+  return commande;
 }
 async function recuperationArticle():Promise<Article[]>{
   const article= await fetch('http://localhost/eatsmart-doriann/doriann-api-eatsmart/articles');
@@ -103,6 +115,8 @@ const boutonValider=document.querySelectorAll<HTMLButtonElement>('.btn-valider')
 boutonValider.forEach((btn)=>{
   btn.addEventListener('click',()=>{
     console.log('Bouton valider commande cliqué');
+    let commande:Commande=creeCommande(afficheTotal(panier))
+    console.log(commande);
   })
 });
 } 
