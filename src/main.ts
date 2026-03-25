@@ -81,6 +81,7 @@ if (appDiv) {
       <div class="cart-total">
         <strong> Total:<span id="total-prix">${afficheTotal(panier)}</sapn>€</strong>
       </div>
+      <button class=btn-valider> Valider la commande</button>
     </asside>
   </div>  
   `;
@@ -96,6 +97,13 @@ tousLesBoutons.forEach((btn, index) => {
       init(); // reafiche le pannier pour faire apparaitre les rajout d'article
 
     }); 
+});
+
+const boutonValider=document.querySelectorAll<HTMLButtonElement>('.btn-valider');
+boutonValider.forEach((btn)=>{
+  btn.addEventListener('click',()=>{
+    console.log('Bouton valider commande cliqué');
+  })
 });
 } 
 // On n'oublie pas d'appeler la fonction pour démarrer l'application ! 
